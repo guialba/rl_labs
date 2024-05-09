@@ -1,4 +1,5 @@
-import numpy as np
+import numpy as np  
+
 
 class River:
     def __init__(self, 
@@ -55,3 +56,28 @@ class River:
     
     def R(self, s,a,s_):
         return int(self.T(s,a,s_)>0 and s_ in self.G)-1
+
+    def plot(self, label=None, mask=None):
+        mask = ['\u2191', '\u2193', '\u2192', '\u2190'] if mask else None
+        x=self.width-1
+        frame = ' '
+        frame += '______'*self.width + '\b \n'
+        i = 0
+        for y in range(self.height-1, -1, -1):
+            i = y * (x+1)
+            for x in range(self.width-1, -1, -1):
+                if label is None:
+                    content = ''
+                elif type(label) == type([]):
+                    content = str(mask[label[i]]) if mask is not None else str(label[i])
+                elif label:
+                    content = str(i)
+                frame += f'|{content.center(5)}'
+                i += 1
+            frame += '|\n' 
+            for x in range(self.width):
+                frame += '|_____' 
+            frame += '|\n' 
+            
+        print(frame)
+
