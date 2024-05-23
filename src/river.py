@@ -58,6 +58,9 @@ class River:
         return int(self.T(s,a,s_)>0 and s_ in self.G)-1
 
     def plot(self, label=None, mask=None):
+        '''
+        
+        '''
         mask = ['\u2191', '\u2193', '\u2192', '\u2190'] if mask else None
         x=self.width-1
         frame = ' '
