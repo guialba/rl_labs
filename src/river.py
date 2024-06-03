@@ -6,7 +6,7 @@ class River:
                  width=5, 
                  height=2,
                  river = [1,2,3],
-                 S0 = 0,
+                 S0 = [0],
                  G = [4]
                 ):
         
@@ -46,7 +46,7 @@ class River:
                 if 0<=m[0]<self.width and 0<=m[1]<self.height:
                     return 0
                 else: # Movimento para fora do grid matem a posição
-                    return 0 if s!=s_ else 1
+                    return 0 if s!=s_ else (1, .5)[s in self.river]
         else:
             if s_ == 0 and s in self.river:
                 return 1
@@ -54,8 +54,9 @@ class River:
                 return .5 if s in self.river else 1
                 # return .5 if s in self.river or s_ in self.river else 1
     
-    def R(self, s,a,s_):
-        return int(self.T(s,a,s_)>0 and s_ in self.G)-1
+    def R(self, s,a=None,s_=None):
+        # return int(self.T(s,a,s_)>0 and s_ in self.G)-1
+        return int(s in self.G)-1
 
     def plot(self, label=None, mask=None):
         '''
@@ -73,6 +74,12 @@ class River:
                     content = ''
                 elif type(label) == type([]):
                     content = str(mask[label[i]]) if mask is not None else str(label[i])
+                elif type(label) == type({}):
+                    if i in label:
+                        content = str(mask[label[i]]) if mask is not None else str(label[i])
+                    else:
+                        content = ' '
+
                 elif label:
                     content = str(i)
                 frame += f'|{content.center(5)}'
