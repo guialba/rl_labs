@@ -20,6 +20,9 @@ class River:
         self.S = np.arange(width*height)
         self.A = np.arange(4)
 
+        self.s = np.random.choice(self.S0)
+        self.r = -1
+
     def T(self, s,a,s_):
         if s in self.G: # Meta é um estado absorvedor, portanto a prob de sair é 0
             return 0 if s!=s_ else 1
@@ -57,6 +60,40 @@ class River:
     def R(self, s,a=None,s_=None):
         # return int(self.T(s,a,s_)>0 and s_ in self.G)-1
         return int(s in self.G)-1
+        # return int(s in self.G)
+
+    def reset(self):
+        self.s = np.random.choice(self.S0)
+        self.r = -1
+    def last(self):
+        return self.s, self.r, (self.s in self.G), None, None
+    def step(self, s,a):
+        self.r = self.R(s)
+        if sum([self.T(s,a,s_) for s_ in self.S]) != 1:
+            print("Err: ",s,a)
+        self.s = np.random.choice(self.S, p=[self.T(s,a,s_) for s_ in self.S])
+        return self.last()
+
+    
+    # def plot(self, func=None, mask=None):
+    #     func = func or (lambda x: 'x' if x == self.s else ' ')
+    #     mask = ['\u2191', '\u2193', '\u2192', '\u2190'] if mask else None
+    #     x=self.width-1
+    #     frame = ' '
+    #     frame += '______'*self.width + '\b \n'
+    #     i = 0
+    #     for y in range(self.height-1, -1, -1):
+    #         i = y * (x+1)
+    #         for x in range(self.width-1, -1, -1):
+    #             content = str(mask[func[i]]) if mask is not None else str(func[i])
+    #             frame += f'|{content.center(5)}'
+    #             i += 1
+    #         frame += '|\n' 
+    #         for x in range(self.width):
+    #             frame += '|_____' 
+    #         frame += '|\n' 
+            
+    #     print(frame)
 
     def plot(self, label=None, mask=None):
         '''
