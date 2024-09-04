@@ -77,7 +77,6 @@ class Hunting:
         agent, pray = self.factor_state(s)
         return int(pray == agent)-1
     
-    
     def plot(self, label=None, mask=None):
         '''
         
